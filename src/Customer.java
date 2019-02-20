@@ -1,14 +1,14 @@
 public class Customer {
     private String name;
-    private double totalLoan;
+    private double loanAmount;
     private double interestRate;
-    private int years;
+    private int yearsToPay;
 
-    public Customer(String name, double totalLoan, double interestRate, int years){
+    public Customer(String name, double loanAmount, double interestRate, int yearsToPay){
         setInterestRate(interestRate);
         setName(name);
-        setTotalLoan(totalLoan);
-        setYears(years);
+        setLoanAmount(loanAmount);
+        setYearsToPay(yearsToPay);
     }
 
     //--------------------
@@ -16,11 +16,11 @@ public class Customer {
     public String getName() {
         return name;
     }
-    public  double getTotalLoan() {
-        return totalLoan;
+    public  double getLoanAmount() {
+        return loanAmount;
     }
-    public int getYears() {
-        return years;
+    public int getYearsToPay() {
+        return yearsToPay;
     }
     public double getInterestRate() {
         return interestRate;
@@ -29,19 +29,17 @@ public class Customer {
 
     //--------------------
     // Setters
-    private void setYears(int years) {
-        this.years = years;
+    private void setYearsToPay(int yearsToPay) {
+        this.yearsToPay = yearsToPay;
     }
     private void setName(String name) {
         this.name = name;
     }
-    private void setTotalLoan(double totalLoan) {
-        this.totalLoan = totalLoan;
+    private void setLoanAmount(double loanAmount) {
+        this.loanAmount = loanAmount;
     }
     private void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
-
-
 
 }
