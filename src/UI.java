@@ -10,7 +10,7 @@ class UI {
         for (Customer customer : customers){
             System.out.println("****************************************************************************************************");
             System.out.println("Prospect " + i++ + ": " + customer.getName() + " wants to borrow " +  customer.getLoanAmount() + "€ for a period of " + customer.getYearsToPay() +
-                    " years and pay " + getFixedMonthlyPayment(customer.getLoanAmount(), customer.getInterestRate(), customer.getYearsToPay()) + " each month.");
+                    " years and pay " + calculateCustomerMonthlyPayment(customer) + " each month.");
         }
     }
 
@@ -23,12 +23,27 @@ class UI {
     // U = Total Loan
     // b = monthly interest
     // p = number of payments
-    private double getFixedMonthlyPayment(double U, double b, int year){
+    private double calculateMonthlyPayment(double U, double b, int year){
         DecimalFormat df = new DecimalFormat("#.###");
         double amount = 0;
         // yearly interest divided into 12 months
-        b = b / 12;
+        b = b / 12 / 100;
         double p = splitYearToMonths(year);
+
+        // amount = U*b * (1 + b)^p  /  [(1 + b)^p - 1]
+        double firstValue = U * b * mathPower(1 + b, p);
+        double secondValue = mathPower(1+b, p) - 1;
+        amount =  firstValue / secondValue;
+        return Double.parseDouble(df.format(amount));
+    }
+
+    private double calculateCustomerMonthlyPayment(Customer customer){
+        DecimalFormat df = new DecimalFormat("#.###");
+        double amount = 0;
+        double U = customer.getLoanAmount();
+        double b = customer.getInterestRate() / 12 / 100;
+        double p = splitYearToMonths(customer.getYearsToPay());
+        // yearly interest divided into 12 months
 
         // amount = U*b * (1 + b)^p  /  [(1 + b)^p - 1]
         double firstValue = U * b * mathPower(1 + b, p);
