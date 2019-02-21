@@ -38,6 +38,35 @@ public class AppTest
      */
     public void testApp() {
         numberTest();
+        nameTest();
+    }
+
+    private void nameTest() {
+        try {
+            File input = new File("src/test/resources/names.txt");
+            Scanner in = new Scanner(input);
+            while (in.hasNext()){
+                String a = in.next();
+                String b = in.next();
+                parseName(a,b);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseName(String unParsed, String expected) {
+        String parsed;
+        parsed = unParsed.replaceAll("[-]{1}}","");
+       // String parsed = unParsed.replaceAll("[-]{0,1}","");
+        parsed = parsed.replaceAll("[-]{2,}","-");
+
+        String regEx = "[^a-zA-ZéúíóáëüïöäèùìòàÈÙÌÒÀÉÚÍÓÁÊÛÎÔÂåöäÖÅÄ-]";
+        parsed = parsed.replaceAll(regEx,"");
+        System.out.println(parsed + " is parsed");
+        System.out.println(expected + " is expected");
+        assertEquals(expected,parsed);
     }
 
     private void numberTest() {

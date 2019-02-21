@@ -22,13 +22,16 @@ class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //for each line is the list
+        readLinesAndAddCustomers(customers, list);
+        return customers;
+    }
 
-
+    private void readLinesAndAddCustomers(ArrayList<Customer> customers, List<String> list) {
         String name;
         double loanAmount;
         double interestRate;
         int yearsToPay;
-        //for each line is the list
         for (String line : list){
             Customer customer;
             //Remove redundant chars such as #
@@ -59,6 +62,5 @@ class DataHandler {
             customer = new Customer(name,loanAmount,interestRate,yearsToPay);
             customers.add(customer);
         }
-        return customers;
     }
 }
