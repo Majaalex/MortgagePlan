@@ -4,8 +4,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -41,33 +44,33 @@ public class AppTest
         nameTest();
     }
 
+    // Tests
     private void nameTest() {
         try {
-            File input = new File("src/test/resources/names.txt");
-            Scanner in = new Scanner(input);
-            while (in.hasNext()){
-                String a = in.nextLine();
-                String b = in.nextLine();
-                parseName(a,b);
+            Path path = Paths.get("src/test/resources/names.txt");
+            BufferedReader br = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
+            String currentLine;
+            while ((currentLine = br.readLine()) != null){
+                String b = br.readLine();
+                testParseName(currentLine,b);
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.getMessage();
         }
     }
 
-    private void parseName(String unParsed, String expected) {
+    private void testParseName(String unParsed, String expected) {
         String parsed;
 
         parsed = unParsed.replaceAll("[-]{1}","");
         parsed = parsed.replaceAll("[-]{2,}","-");
         parsed = parsed.replaceAll("-$","");
-        String regEx = "[^a-zA-ZåäöÅÄÖéúíóáëüïêûîôâÉÚÍÓÁèùìòàÈÙÌÒÀËÜÏ\\s-]";
-
+        // https://stackoverflow.com/questions/1611979/remove-all-non-word-characters-from-a-string-in-java-leaving-accented-charact
+        String regEx = "[^\\p{L}\\p{Nd}\\s]+";
         parsed = parsed.replaceAll(regEx,"");
-
-        System.out.println(parsed + " parsed");
-        System.out.println(expected + " expected");
         assertEquals(expected,parsed);
     }
 

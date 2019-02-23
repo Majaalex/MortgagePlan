@@ -1,39 +1,41 @@
 package calc;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 class UI {
 
     void createUI(){
+        Locale finnish = new Locale("fi","FI");
         DataHandler data = new DataHandler();
         ArrayList<Customer> customers = data.readFile();
         int i = 1;
         for (Customer customer : customers){
             System.out.println("****************************************************************************************************");
             System.out.println("Prospect " + i++ + ": " + customer.getName() +
-                    " wants to borrow " +  customer.getLoanAmount() +
-                    "€ for a period of " + customer.getYearsToPay() +
-                    " years and pay " + calculateCustomerMonthlyPayment(customer) + " each month.");
+                    " wants to borrow " + displayCurrency(finnish,customer.getLoanAmount()) +
+                    " for a period of " + customer.getYearsToPay() +
+                    " years and pay " + displayCurrency(finnish, calculateCustomerMonthlyPayment(customer))  + " each month.");
         }
     }
 
-
-
     //--------------------
     // Calculations
-
 
     // U = Total Loan
     // b = monthly interest
     // p = number of payments
       private double calculateCustomerMonthlyPayment(Customer customer){
         DecimalFormat df = new DecimalFormat("#.###");
-        double amount = 0;
+        double amount;
         double U = customer.getLoanAmount();
+          // yearly interest divided into 12 months into a % amount
         double b = customer.getInterestRate() / 12 / 100;
         double p = splitYearToMonths(customer.getYearsToPay());
-        // yearly interest divided into 12 months
+
 
         // amount = U*b * (1 + b)^p  /  [(1 + b)^p - 1]
         double firstValue = U * b * mathPower(1 + b, p);
@@ -41,7 +43,7 @@ class UI {
         amount =  firstValue / secondValue;
         return Double.parseDouble(df.format(amount));
     }
-    // TODO: This will round the totalMonths ie 1.4 * 12 == 16.8
+
     private double splitYearToMonths(int years){
         double totalMonths = 0;
         totalMonths = years * 12;
@@ -59,11 +61,17 @@ class UI {
             power = -power;
         }
 
-        // multiplies the value by itself power times
         for (int i = 0; i < power; i++){
             result = result * base;
         }
         return result;
+    }
+
+    // Displayed a currency based on locale
+    static private String displayCurrency(Locale currentLocale, double currencyAmount){
+        Currency euro = Currency.getInstance(currentLocale);
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(currentLocale);
+        return currencyFormatter.format(currencyAmount) + euro.getCurrencyCode();
     }
 
 

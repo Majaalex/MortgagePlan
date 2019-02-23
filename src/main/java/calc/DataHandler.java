@@ -15,6 +15,7 @@ class DataHandler {
         List<String> list = new ArrayList<>();
         String fileName = "prospects.txt";
 
+        // Read file contents into a list
         try (Stream<String> stream = Files.lines(Paths.get(fileName))){
             list = stream
                     .collect(Collectors.toList());
@@ -22,7 +23,6 @@ class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //for each line is the list
         readLinesAndAddCustomers(customers, list);
         return customers;
     }
@@ -32,47 +32,45 @@ class DataHandler {
         double loanAmount;
         double interestRate;
         int yearsToPay;
+        Customer customer;
+
         for (String line : list){
-            Customer customer;
-            //Remove redundant chars such as #
-            line = line.replace("\"","");
-            //split the line into an array
             String[] holder = line.split(",");
-            //if array has a size of 4, firstnmae lastname are in the same section
+            // Skip the first line since it's just table names
             if (holder[0].equals("Customer")){
                 continue;
             }
+            // Firstname Lastname in the same String
             if (holder.length == 4){
                 name = holder[0];
-                name = parseName(name);
+                name = sanitizeName(name);
                 loanAmount = Double.parseDouble(holder[1]);
                 interestRate = Double.parseDouble(holder[2]);
                 yearsToPay = Integer.parseInt(holder[3]);
             }
-            //if array has a size of 5, firstname lastname are seperate
+            // Firstname Lastname separated
             else if (holder.length == 5){
-                name = parseName(holder[0]) + " " + parseName(holder[1]);
+                name = sanitizeName(holder[0]) + " " + sanitizeName(holder[1]);
                 loanAmount = Double.parseDouble(holder[2]);
                 interestRate = Double.parseDouble(holder[3]);
                 yearsToPay = Integer.parseInt(holder[4]);
             }
             // If it is an incorrect size, skip it
             else continue;
-            //clean up these values and then construct the customer as an instance of Customer
-            //add the Customer to customers arraylist
+
             customer = new Customer(name,loanAmount,interestRate,yearsToPay);
             customers.add(customer);
         }
     }
 
-    private String parseName(String unParsed){
+    // Cleans the names from unnecessary characters
+    private String sanitizeName(String unParsed){
             String parsed;
-
-            parsed = unParsed.replaceAll("[-]{1}}","");
+            parsed = unParsed.replaceAll("[-]{1}","");
             parsed = parsed.replaceAll("[-]{2,}","-");
             parsed = parsed.replaceAll("-$","");
-            String regEx = "[^a-zA-ZåäöÅÄÖéúíóáëüïêûîôâÉÚÍÓÁèùìòàÈÙÌÒÀËÜÏ\\s-]";
-
+            // https://stackoverflow.com/questions/1611979/remove-all-non-word-characters-from-a-string-in-java-leaving-accented-charact
+            String regEx = "[^\\p{L}\\p{Nd}\\s]+";
             parsed = parsed.replaceAll(regEx,"");
             return parsed;
     }
