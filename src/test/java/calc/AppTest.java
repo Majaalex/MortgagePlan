@@ -46,8 +46,8 @@ public class AppTest
             File input = new File("src/test/resources/names.txt");
             Scanner in = new Scanner(input);
             while (in.hasNext()){
-                String a = in.next();
-                String b = in.next();
+                String a = in.nextLine();
+                String b = in.nextLine();
                 parseName(a,b);
             }
 
@@ -58,14 +58,16 @@ public class AppTest
 
     private void parseName(String unParsed, String expected) {
         String parsed;
-        parsed = unParsed.replaceAll("[-]{1}}","");
-       // String parsed = unParsed.replaceAll("[-]{0,1}","");
-        parsed = parsed.replaceAll("[-]{2,}","-");
 
-        String regEx = "[^a-zA-ZéúíóáëüïöäèùìòàÈÙÌÒÀÉÚÍÓÁÊÛÎÔÂåöäÖÅÄ-]";
+        parsed = unParsed.replaceAll("[-]{1}","");
+        parsed = parsed.replaceAll("[-]{2,}","-");
+        parsed = parsed.replaceAll("-$","");
+        String regEx = "[^a-zA-ZåäöÅÄÖéúíóáëüïêûîôâÉÚÍÓÁèùìòàÈÙÌÒÀËÜÏ\\s-]";
+
         parsed = parsed.replaceAll(regEx,"");
-        System.out.println(parsed + " is parsed");
-        System.out.println(expected + " is expected");
+
+        System.out.println(parsed + " parsed");
+        System.out.println(expected + " expected");
         assertEquals(expected,parsed);
     }
 

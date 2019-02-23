@@ -15,16 +15,16 @@ public class Customer {
 
     //--------------------
     // Getters
-    public String getName() {
+    String getName() {
         return name;
     }
-    public  double getLoanAmount() {
+    double getLoanAmount() {
         return loanAmount;
     }
-    public int getYearsToPay() {
+    int getYearsToPay() {
         return yearsToPay;
     }
-    public double getInterestRate() {
+    double getInterestRate() {
         return interestRate;
     }
 

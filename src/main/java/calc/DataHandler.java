@@ -44,13 +44,14 @@ class DataHandler {
             }
             if (holder.length == 4){
                 name = holder[0];
+                name = parseName(name);
                 loanAmount = Double.parseDouble(holder[1]);
                 interestRate = Double.parseDouble(holder[2]);
                 yearsToPay = Integer.parseInt(holder[3]);
             }
             //if array has a size of 5, firstname lastname are seperate
             else if (holder.length == 5){
-                name = holder[0] + " " + holder[1];
+                name = parseName(holder[0]) + " " + parseName(holder[1]);
                 loanAmount = Double.parseDouble(holder[2]);
                 interestRate = Double.parseDouble(holder[3]);
                 yearsToPay = Integer.parseInt(holder[4]);
@@ -62,5 +63,17 @@ class DataHandler {
             customer = new Customer(name,loanAmount,interestRate,yearsToPay);
             customers.add(customer);
         }
+    }
+
+    private String parseName(String unParsed){
+            String parsed;
+
+            parsed = unParsed.replaceAll("[-]{1}}","");
+            parsed = parsed.replaceAll("[-]{2,}","-");
+            parsed = parsed.replaceAll("-$","");
+            String regEx = "[^a-zA-ZåäöÅÄÖéúíóáëüïêûîôâÉÚÍÓÁèùìòàÈÙÌÒÀËÜÏ\\s-]";
+
+            parsed = parsed.replaceAll(regEx,"");
+            return parsed;
     }
 }
