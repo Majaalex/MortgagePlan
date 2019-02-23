@@ -42,9 +42,61 @@ public class AppTest
     public void testApp() {
         numberTest();
         nameTest();
+        yearToMonthTest();
+        monthlyPaymentTest();
     }
 
-    // Tests
+    //-------------------------------------------
+    // UNIT TESTS
+    //-------------------------------------------
+
+
+    // U = Total Loan
+    // b = monthly interest
+    // p = number of payments
+    private void monthlyPaymentTest() {
+        DecimalFormat df = new DecimalFormat("#.#");
+        double amount;
+        double U = 1000;
+        // yearly interest divided into 12 months into a % amount
+        double b = 1.0 / 12 / 100;
+        double p = 24;
+
+        // amount = U*b * (1 + b)^p  /  [(1 + b)^p - 1]
+        double firstValue = U * b * Math.pow(1 + b, p);
+        double secondValue = Math.pow(1+b,p) - 1;
+        amount =  firstValue / secondValue;
+        amount = Double.parseDouble(df.format(amount));
+        System.out.println("Tested monthly payment.");
+        assertEquals(amount,42.1);
+    }
+
+    private void yearToMonthTest() {
+        try {
+            Path path = Paths.get("src/test/resources/year.txt");
+            BufferedReader br = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1);
+            String currentLine;
+            while ((currentLine = br.readLine()) != null){
+                String b = br.readLine();
+                calculateYearToMonth(currentLine,b);
+            }
+            System.out.println("Tested year conversion.");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.getMessage();
+        }
+    }
+
+    private void calculateYearToMonth(String yearStr, String expectedMonths) {
+        double year = Double.parseDouble(yearStr);
+        double months = year * 12;
+        double expected = Double.parseDouble(expectedMonths);
+        assertEquals(months,expected);
+    }
+
+
     private void nameTest() {
         try {
             Path path = Paths.get("src/test/resources/names.txt");
@@ -54,6 +106,7 @@ public class AppTest
                 String b = br.readLine();
                 testParseName(currentLine,b);
             }
+            System.out.println("Tested names.");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -84,6 +137,7 @@ public class AppTest
                 double result = Math.pow(a,b);
                 testPower(a,b,result);
             }
+            System.out.println("Tested numbers.");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
