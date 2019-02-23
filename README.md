@@ -25,6 +25,7 @@ Makes use of the .txt files under test/resources
 
 ```
 ""Eva"" => Eva
+mathPower(10,2) => 100
 
 ```
 
