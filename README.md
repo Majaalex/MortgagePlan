@@ -6,7 +6,7 @@ A simple app which takes info from a .txt and calculates the monthly payment to 
 
 ### Prerequisites
 
-* [Maven install tips](https://maven.apache.org/install.html)
+* Maven (https://maven.apache.org/install.html)
 
 ### Installing
 
