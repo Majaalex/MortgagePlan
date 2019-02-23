@@ -17,6 +17,10 @@ java -cp target/MortgageCalculator-1.0.jar calc.Main
 ```
 
 ## Running the tests
+To run the tests in maven
+```
+mvn test
+```
 
 ### Unit tests
 
@@ -25,8 +29,8 @@ Makes use of the .txt files under test/resources
 
 ```
 ""Eva"" => Eva
-mathPower(10,2) => 100
-
+testPower(base, power, expected)
+testPower(10,2,100) => OK
 ```
 
 
