@@ -8,7 +8,7 @@ A simple app which takes info from a .txt and calculates the monthly payment to 
 
 * Maven (https://maven.apache.org/install.html)
 
-### Installing
+### Installing and running
 
 ```
 git clone https://github.com/Majaalex/MortgagePlan
