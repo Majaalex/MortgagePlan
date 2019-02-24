@@ -12,29 +12,30 @@ class DataHandler {
 
     ArrayList<Customer> readFile(){
         ArrayList<Customer> customers = new ArrayList<>();
-        List<String> list = new ArrayList<>();
+        List<String> fileContent = new ArrayList<>();
         String fileName = "prospects.txt";
 
         // Read file contents into a list
         try (Stream<String> stream = Files.lines(Paths.get(fileName))){
-            list = stream
+            fileContent = stream
                     .collect(Collectors.toList());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        readLinesAndAddCustomers(customers, list);
+        readLinesAndAddCustomers(customers, fileContent);
         return customers;
     }
 
-    private void readLinesAndAddCustomers(ArrayList<Customer> customers, List<String> list) {
+    private void readLinesAndAddCustomers(ArrayList<Customer> customers, List<String> fileContent) {
         String name;
         double loanAmount;
         double interestRate;
         int yearsToPay;
         Customer customer;
 
-        for (String line : list){
+        //loop through each line in the .txt file
+        for (String line : fileContent){
             String[] holder = line.split(",");
             // Skip the first line since it's just table names
             if (holder[0].equals("Customer")){
@@ -58,6 +59,7 @@ class DataHandler {
             // If it is an incorrect size, skip it
             else continue;
 
+            // Create an instance of Customer and add it to the ArrayList of customers
             customer = new Customer(name,loanAmount,interestRate,yearsToPay);
             customers.add(customer);
         }

@@ -50,7 +50,7 @@ class UI {
         return totalMonths;
     }
 
-    // Calculates the base to the power of power
+    // Calculates the exponent of a base
     private double mathPower(double base, double power){
         // if power == 0 result will be 1, startValue is 1 since 0*X = 0
         double result = 1;
@@ -61,6 +61,7 @@ class UI {
             power = -power;
         }
 
+        // Multiply everything together
         for (int i = 0; i < power; i++){
             result = result * base;
         }
@@ -69,9 +70,11 @@ class UI {
 
     // Displayed a currency based on locale
     static private String displayCurrency(Locale currentLocale, double currencyAmount){
-        Currency euro = Currency.getInstance(currentLocale);
+        // Gets the currency corresponding to the Locale input FI => EUR
+        Currency currency = Currency.getInstance(currentLocale);
+        // Create a formatter to format currency properly
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(currentLocale);
-        return currencyFormatter.format(currencyAmount) + euro.getCurrencyCode();
+        return currencyFormatter.format(currencyAmount) + currency.getCurrencyCode();
     }
 
 
